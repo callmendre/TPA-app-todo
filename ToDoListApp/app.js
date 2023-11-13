@@ -39,3 +39,48 @@ app.get('/tasks', (req, res) => {
     return res.status(200).json(results);
   });
 });
+
+// ... (dalam file app.js)
+
+const taskForm = document.getElementById('taskForm');
+const taskListContainer = document.getElementById('taskList');
+
+function addTask() {
+  const taskInput = document.getElementById('task');
+  const taskValue = taskInput.value;
+
+  fetch('http://localhost:3000/tasks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ task: taskValue }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    fetchTasks();
+  })
+  .catch(error => console.error('Error:', error));
+
+  taskInput.value = '';
+}
+
+function fetchTasks() {
+  fetch('http://localhost:3000/tasks')
+    .then(response => response.json())
+    .then(tasks => displayTasks(tasks))
+    .catch(error => console.error('Error:', error));
+}
+
+function displayTasks(tasks) {
+  taskListContainer.innerHTML = '';
+
+  tasks.forEach(task => {
+    const taskItem = document.createElement('li');
+    taskItem.textContent = task.task;
+    taskListContainer.appendChild(taskItem);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', fetchTasks);
