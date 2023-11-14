@@ -17,6 +17,10 @@ const db = mysql.createConnection({
 const publicDirectory = path.join(__dirname, './public')
 app.use(express.static(publicDirectory))
 
+app.use(express.urlencoded({extended: false}))
+
+app.use(express.json())
+
 app.set('view engine', 'hbs');
 
 db.connect((error) =>{
@@ -27,13 +31,9 @@ db.connect((error) =>{
     }
 });
 
-app.get('/login', (req, res) =>{
-    res.render("index");
-})
+app.use('/', require('./routes/pages'))
+app.use('/auth', require('./routes/auth'))
 
-app.get('/register', (req, res) =>{
-    res.render("register");
-})
 
 
 
