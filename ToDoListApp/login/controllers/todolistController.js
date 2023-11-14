@@ -39,3 +39,12 @@ exports.deleteTask = (req, res) => {
         res.redirect('/todolist');
     });
 };
+
+// ...
+
+exports.deleteAllTasks = (req, res) => {
+    db.query('DELETE FROM todolist', (error) => {
+        if (error) throw error;
+        res.redirect('/todolist');
+    });
+};

@@ -7,5 +7,6 @@ router.post('/add', todolistController.addTask);
 router.get('/edit/:id', todolistController.getTaskById);
 router.post('/edit/:id', todolistController.updateTask);
 router.get('/delete/:id', todolistController.deleteTask);
+router.post('/deleteAll', todolistController.deleteAllTasks);
 
 module.exports = router;
