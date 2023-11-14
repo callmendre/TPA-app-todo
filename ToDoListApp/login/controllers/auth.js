@@ -1,4 +1,8 @@
 const mysql = require('mysql')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+
+
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -12,7 +16,7 @@ exports.register = (req, res) =>{
     
     const { name, email,password } =    req.body;
 
-    db.query('SELECT email from users WHERE email = ?', [email], (error, results) =>{
+    db.query('SELECT email from users WHERE email = ?', [email], async (error, results) =>{
         if(error){
             console.log(error)
         }
@@ -21,7 +25,20 @@ exports.register = (req, res) =>{
                 message: 'Email ini sudah digunakan'
             })
         }
-    }) 
 
-    res.send("Form dikumpulkan");
+        let hashedPassword = await bcrypt.hash(password, 8)
+        console.log(hashedPassword)
+
+        db.query('INSERT INTO users SET ? ', {name: name, email:email, password:password},(error, results) =>{
+            if(error){
+                console.log(error)
+            }else{
+                console.log(results)
+                return res.render('register', {
+                    message: 'Berhasil ditambahkan'
+            })
+            }
+        })
+    })
+
 }
