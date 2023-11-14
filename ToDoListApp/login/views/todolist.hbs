@@ -7,12 +7,29 @@
 </head>
 <body>
     <div>
-        <h2>ToDo List</h2>
-        <h3>Hai andriiii</h3>
+
+    <h1>ToDo List</h1>
+    
+    <!-- Form untuk menambah tugas -->
+    <form action="/todolist/add" method="post">
+        <input type="text" name="task" placeholder="Tambah Tugas" required>
+        <button type="submit">Tambah</button>
+    </form>
+
+    <!-- Daftar tugas -->
+    <ul>
+        {{#each tasks}}
+            <li>
+                {{this.task}}
+                <a href="/todolist/edit/{{this.id}}">Edit</a>
+                <a href="/todolist/delete/{{this.id}}">Hapus</a>
+            </li>
+        {{/each}}
+    </ul>
         {{#if message}}
             <p>{{message}}</p>
         {{/if}}
-        <!-- Isi ToDo list -->
+        
     </div>
 </body>
 </html>
