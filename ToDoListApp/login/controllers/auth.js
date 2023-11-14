@@ -12,7 +12,16 @@ exports.register = (req, res) =>{
     
     const { name, email,password } =    req.body;
 
-    db.query() 
+    db.query('SELECT email from users WHERE email = ?', [email], (error, results) =>{
+        if(error){
+            console.log(error)
+        }
+        if(results.length > 0){
+            return res.render('register', {
+                message: 'Email ini sudah digunakan'
+            })
+        }
+    }) 
 
     res.send("Form dikumpulkan");
 }
