@@ -2,11 +2,13 @@ const express = require('express')
 const path = require('path')
 const mysql = require('mysql')
 const dotenv =  require('dotenv')
+const todolistRouter = require('./routes/todolist');
 
 dotenv.config({path: './.env'})
 
 
 const app = express() 
+
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_user,
@@ -15,13 +17,15 @@ const db = mysql.createConnection({
 })
 
 const publicDirectory = path.join(__dirname, './public')
+
+
 app.use(express.static(publicDirectory))
-
 app.use(express.urlencoded({extended: false}))
-
 app.use(express.json())
-
 app.set('view engine', 'hbs');
+app.use('/todolist', todolistRouter);
+
+
 
 db.connect((error) =>{
     if(error){
